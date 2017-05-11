@@ -3,6 +3,7 @@
 #include "Shell.h"
 #include <stdlib.h>
 
+
 class Connector : public Shell {
 	protected:
 	    Shell* left;
