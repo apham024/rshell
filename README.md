@@ -25,6 +25,10 @@ we are able to accomplish this
     $ make
     $ bin/rshell
     
+## Authors
+Annie Pham
+Sabrina Wong
+    
 ## Bugs/Limitations
     Commands cannot take in the second argument after connectors 
     Commands cannot implement cd 
