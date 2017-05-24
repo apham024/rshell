@@ -14,9 +14,9 @@ we are able to accomplish this
     "#" = Everything after "#" will be a comment.
 
 ## Can support commands such as
-    "exit" = Will exit the entire command line and program.
-    "mkdir" = Creates a directory from the terminal.
-    "pwd" = Displays the pathname of the current directory. 
+"exit" = Will exit the entire command line and program.<br />
+"mkdir" = Creates a directory from the terminal.<br />
+"pwd" = Displays the pathname of the current directory. <br />
 
 ## Install Instructions
     $ git clone https://github.com/apham024/rshell.git
@@ -30,5 +30,5 @@ Annie Pham <br />
 Sabrina Wong
     
 ## Bugs/Limitations
-    Commands cannot take in the second argument after connectors 
-    Commands cannot implement cd 
+Commands cannot take in the second argument after connectors <br />
+Commands cannot implement cd <br />
