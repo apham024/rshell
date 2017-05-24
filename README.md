@@ -8,15 +8,15 @@ command line in bash and we will be using connectors to execute them. By using a
 design pattern consisting of Connector class as the composite and a command class as a leaf,
 we are able to accomplish this
 
-";" = The following command will always be executed.
-"||" = If the current command fails, the following command will be executed.
-"&&" = If the current command succeeds, the following command will be executed.
-"#" = Everything after "#" will be a comment.
+    ";" = The following command will always be executed.
+    "||" = If the current command fails, the following command will be executed.
+    "&&" = If the current command succeeds, the following command will be executed.
+    "#" = Everything after "#" will be a comment.
 
 ## Can support commands such as
-"exit" = Will exit the entire command line and program.
-"mkdir" = Creates a directory from the terminal.
-"pwd" = Displays the pathname of the current directory. 
+    "exit" = Will exit the entire command line and program.
+    "mkdir" = Creates a directory from the terminal.
+    "pwd" = Displays the pathname of the current directory. 
 
 ## Install Instructions
     $ git clone https://github.com/apham024/rshell.git
@@ -26,5 +26,5 @@ we are able to accomplish this
     $ bin/rshell
     
 ## Bugs/Limitations
-Commands cannot take in the second argument after connectors 
+    Commands cannot take in the second argument after connectors 
     Commands cannot implement cd 
