@@ -26,7 +26,7 @@ we are able to accomplish this
     $ bin/rshell
     
 ## Authors
-Annie Pham
+Annie Pham <br />
 Sabrina Wong
     
 ## Bugs/Limitations
