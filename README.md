@@ -1,5 +1,5 @@
 ## CS 100 RShell
-This is a command shell. Programmed in C++ and makes use of execvp, waitpid, and fork.
+This is a command shell. Programmed in C++ and makes use of execvp, waitpid, and fork.<br />
 Has the same functionality as a regular terminal.
 
 ## Introduction
