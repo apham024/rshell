@@ -27,4 +27,4 @@ we are able to accomplish this
     
 ## Bugs/Limitations
 Commands cannot take in the second argument after connectors 
-    Commands cannot implement cd
+    Commands cannot implement cd 
