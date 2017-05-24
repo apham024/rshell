@@ -8,10 +8,10 @@ command line in bash and we will be using connectors to execute them. By using a
 design pattern consisting of Connector class as the composite and a command class as a leaf,
 we are able to accomplish this
 
-    ";" = The following command will always be executed.
-    "||" = If the current command fails, the following command will be executed.
-    "&&" = If the current command succeeds, the following command will be executed.
-    "#" = Everything after "#" will be a comment.
+";" = The following command will always be executed.<br />
+"||" = If the current command fails, the following command will be executed.<br />
+"&&" = If the current command succeeds, the following command will be executed.<br />
+"#" = Everything after "#" will be a comment.<br />
 
 ## Can support commands such as
 "exit" = Will exit the entire command line and program.<br />
