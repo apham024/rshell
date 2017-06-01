@@ -13,8 +13,9 @@ class Shell {
 		string id;
 	public:
 		Shell() {}
-		string getID() { return id; };
 		virtual bool execute() = 0;
+		string getID() { return id; };
+
 };
 
 #endif

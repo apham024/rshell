@@ -1,39 +1,50 @@
 #include "Connector.h"
 
-// checks for left and right commands
+#include <iostream>
+
+using namespace std;
+
+// checks for left and right commands for tree used in parsing
 void Connector::errorCheck() {
-    if (!left) {
+    if (!leftChild) {
         cout << "No left child" << endl;
         exit(1);
-    } else if (!right) {
+    } else if (!rightChild) {
          cout << "No right child" << endl;
         exit(1);
     }
 }
 
-void Connector::setLeftChild(Shell* l) {
-    left = l;
+void Connector::setLeftChild(Shell* left) {
+    leftChild = left;
 }
 
-void Connector::setRightChild(Shell * r) {
-    right = r;
+void Connector::setRightChild(Shell * right) {
+    rightChild = right;
 }
 
 bool And::execute() {
+    // checks to make sure there is a left and right child
     errorCheck();
-    return (left->execute() && right->execute());
+    return (leftChild->execute() && rightChild->execute());
 }
 
 bool Or::execute() {
     errorCheck();
-    return (left->execute() || right->execute());
+    return (leftChild->execute() || rightChild->execute());
 }
 
 bool SemiColon::execute() {
-    bool temp = left->execute();    //dummy variable
-    temp = right->execute();        //use temp to avoid error from compiler
-                                    //for not using variable
+    // temp variable
+    bool temp = leftChild->execute();   
+    //use temp to avoid error from compiler
+    temp = rightChild->execute();       
     return temp;
 }
 
+bool Parentheses::execute() {
+    // always returns true to execute first
+    return true;
+
+}
 

@@ -6,16 +6,16 @@
 
 class Connector : public Shell {
 	protected:
-	    Shell* left;
-	    Shell* right;
+	    Shell* leftChild;
+	    Shell* rightChild;
 	public:
-		Connector() : left(NULL), right(NULL) { id = "conn"; } 
-		//error checking function
+		// sets id to conn for program to know when to check for operators
+		Connector() : leftChild(NULL), rightChild(NULL) { } 
+		// error checking function for children
 		void errorCheck();
-		//modifier function
-		void setLeftChild(Shell* l);
-		void setRightChild(Shell* r);
-		//access function
+		// setter functions
+		void setLeftChild(Shell* left);
+		void setRightChild(Shell* right);
 		virtual bool execute() = 0;
 };
 
@@ -37,6 +37,11 @@ class SemiColon : public Connector {
         bool execute();
 };
 
+class Parentheses : public Connector {
+    public:
+      // only marks for left parentheses
+      Parentheses() { id = "("; }
+      bool execute();
+};
+
 #endif
-
-
