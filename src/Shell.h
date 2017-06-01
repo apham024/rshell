@@ -19,6 +19,3 @@ class Shell {
 };
 
 #endif
-
-
-
