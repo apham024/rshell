@@ -14,7 +14,3 @@ test -f poop.h || echo file poop.h does not exist
 
 rm -r testdir
 [ -d testdir ] || echo no such directory found
-
-
-
-
