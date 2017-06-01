@@ -3,7 +3,6 @@
 
 [ -e bin ] && echo exists
 test -f LICENSE && echo file exists
-
 mkdir testdir
 test -d testdir && echo is a directory
 
