@@ -1,5 +1,4 @@
 #include "Shell.h"
-#include "Forker.h"
 #include "Parse.h"
 
 #include <iostream>
@@ -29,7 +28,7 @@ int main() {
 		// gets a command
 		getline(cin, userInput);  
 		// parses and runs program
-		p->par(userInput);
+		p->parse(userInput);
 		// to prevent memory leak
 		delete p;
 	}
