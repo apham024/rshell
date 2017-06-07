@@ -125,6 +125,11 @@ void Parse::parse(string input) {
     const string o = "||"; // WORKS
     const string s = ";"; // WORKS
     
+    const string singleInput = "<"; // to use as input in a file
+    const string singleOutput = ">";
+    const string doubleOutput = ">>"; 
+    const string pipe = "|"; // directs the output from the first command into the input for the second command
+    
     for(unsigned i = 0; i < input.size(); i++) {
 
         if(input.at(i) == ';') {
@@ -315,5 +320,3 @@ void Parse::parse(string input) {
         exec_cmds_vec.clear();
     }
 }
-
-
