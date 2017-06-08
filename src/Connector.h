@@ -8,9 +8,10 @@ class Connector : public Shell {
 	protected:
 	    Shell* leftChild;
 	    Shell* rightChild;
+
 	public:
 		// sets id to conn for program to know when to check for operators
-		Connector() : leftChild(NULL), rightChild(NULL) { } 
+		Connector() : leftChild(NULL), rightChild(NULL) { id = "connector"; } 
 		// error checking function for children
 		void errorCheck();
 		// setter functions

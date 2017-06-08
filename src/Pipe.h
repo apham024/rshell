@@ -4,7 +4,7 @@
 #include "Connector.h"
 #include "Connector.cpp"
 
-class Pipe : public Connector { // |
+class Pipe : public Connector { // |, needs dup()
     public:
         Pipe();
         Pipe(Shell* leftChild, Shell* rightChild);
@@ -26,7 +26,7 @@ class SingleOutput : public Connector { // > overwrites the entire file
         bool execute();
 };
 
-class DoubleOutput : public Connector { // >> adds onto the file 
+class DoubleOutput : public Connector { // >> adds onto the file, needs dup()
     public:
         DoubleOutput();
         DoubleOutput(Shell* leftChild, Shell* rightChild);

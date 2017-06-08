@@ -23,7 +23,8 @@ class Fork : public Shell {
 class Parse {
     protected:
         vector<Shell*> exec_cmds_vec; // this vector is only used for fork, tester, and tree objs
-                                            // used to execute the above commands at the end of parsing
+        // void execExecute(){
+                         // used to execute the above commands at the end of parsing
         void makeTree(stack<Connector*> &);
         void makeFork(vector<string> &,unsigned, unsigned);
         void makeTester(vector<string> &,unsigned, unsigned);

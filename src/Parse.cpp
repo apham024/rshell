@@ -96,7 +96,7 @@ void Parse::makeFork(vector<string> &cmds_vector, unsigned i, unsigned j) {
 
 void Parse::makeTree(stack<Connector*> &cmd_stack) {
     // since stack is LIFO, set right child first
-    if (!cmd_stack.empty()) {
+    if (!cmd_stack.empty() && cmd_stack.top()->getID() == "connector") {
         // to set right the child
         cmd_stack.top()->setRightChild(exec_cmds_vec.back());
         exec_cmds_vec.pop_back();
@@ -119,11 +119,16 @@ void Parse::makeTree(stack<Connector*> &cmd_stack) {
     // if first command returns false and || is found, then execute after operator
 
 void Parse::parse(string input) {
-    const string leftParen = "("; // FIX
-    const string rightParen = ")"; // FIX
+    const string leftParen = "("; // done
+    const string rightParen = ")"; // done
     const string a = "&&"; // WORKS
     const string o = "||"; // WORKS
     const string s = ";"; // WORKS
+    
+    const string doubleOutput = ">>"; 
+    const string singleOutput = ">";
+    const string singleInput = "<";
+    const string pipe = "|"; 
     
     for(unsigned i = 0; i < input.size(); i++) {
 
@@ -282,8 +287,6 @@ void Parse::parse(string input) {
             }
 
         }
-        
-        
         else { // iterates until find a connector
             unsigned j = 0;
             for (j = i; j < cmds_vector.size(); ++j) {
@@ -315,4 +318,3 @@ void Parse::parse(string input) {
         exec_cmds_vec.clear();
     }
 }
-
