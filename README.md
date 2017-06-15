@@ -28,7 +28,7 @@ we are able to accomplish this
 ## Install Instructions
     $ git clone https://github.com/apham024/rshell.git
     $ cd rshell
-    $ git checkout hw3
+    $ git checkout hw4
     $ make
     $ bin/rshell
     
