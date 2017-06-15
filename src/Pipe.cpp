@@ -11,35 +11,64 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <sys/types.h>
 
+Pipe::Pipe(): Connector(leftChild, rightChild){ id = "|";}
 Pipe::Pipe(Shell* leftChild, Shell* rightChild): Connector(leftChild, rightChild) { }
-Pipe::Pipe(): Connector() { }
 
-bool execute() {
-    int fd[2];
-    pid_t childpid;
+bool Pipe::execute() { // FIX: need dup() and pipe()
+    // int fd[2], pid;
+    
+    // if(pipe(fd) == -1){
+    //     perror("PIPE");
+    //     return false;
+    // }
 
-    pipe(fd);
-        
-    if((childpid = fork()) == -1) {
-        perror("fork");
-        exit(1);
-    }
+    // int input = open()
 
-    if(childpid == 0) {
-        /* Child process closes up input side of pipe */
-        close(fd[0]);
-
-        /* Send "string" through the output side of pipe */
-        write(fd[1], string, (strlen(string)+1));
-        exit(0);
-    }
-    else {
-        /* Parent process closes up output side of pipe */
-        close(fd[1]);
-    }
-        
-    return(0);
+    return true;
 }
 
+SingleInput::SingleInput(): Connector(leftChild, rightChild){ id = "<";}
+SingleInput::SingleInput(char* filename, char* coms):Connector() {filename = filename; coms = coms;}
+SingleInput::SingleInput(Shell* leftChild, Shell* rightChild): Connector(leftChild, rightChild){}
+
+bool SingleInput::execute() {
+    
+    
+    
+    
+    //     close(0);
+    //     open(getFilename(), O_RDONLY);
+    // if(fork() == 0){
+    //     // execvp the left side of >
+    // }
+    // FIX
+    
+    return true;
+}
+
+SingleOutput::SingleOutput(): Connector(leftChild, rightChild){ id = ">";}
+SingleOutput::SingleOutput(char* filename, char* coms):Connector() {filename = filename; coms = coms; }
+SingleOutput::SingleOutput(Shell* leftChild, Shell* rightChild): Connector(leftChild, rightChild){}
+bool SingleOutput::execute(){
+    // int out = open(filename, O_WRONLY|O_CREAT, 0666);        // set of permission to write/make
+    // similar/ opposite of input
+    // execvp the left side of >
+    // filename should be in char* which is the right side of >
+    
+    return true;
+}
+
+
+DoubleOutput::DoubleOutput(): Connector(leftChild, rightChild){ id = ">>";}
+DoubleOutput::DoubleOutput(char* filename, char* coms):Connector() {filename = filename; coms = coms;}
+DoubleOutput::DoubleOutput(Shell* leftChild, Shell* rightChild):  Connector(leftChild, rightChild){}
+
+bool DoubleOutput::execute(){
+    
+    //tba
+    
+    return true;
+}

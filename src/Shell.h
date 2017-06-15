@@ -11,10 +11,12 @@ using namespace std;
 class Shell {
 	protected:
 		string id;
+		string filename;
 	public:
 		Shell() {}
 		virtual bool execute() = 0;
 		string getID() { return id; };
+		// char* getFilename(){ char* fName = strcpy(filename); };
 
 };
 

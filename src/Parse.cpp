@@ -1,6 +1,7 @@
 #include "Parse.h"
 #include "Tester.h"
 #include "Shell.h"
+#include "Pipe.h"
 
 #include <iostream>
 #include <algorithm>
@@ -16,6 +17,8 @@
 #include <sys/errno.h>
 #include <sys/stat.h>
 #include <cstdio>
+#include <fcntl.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -109,18 +112,16 @@ void Parse::makeTree(stack<Connector*> &cmd_stack) {
     }
 }
 
-    // CONNECTOR CASE: if first command returns true and if 
-    // operator && is found, execute after operator as well
-    // if first command is false and operator && is found, break 
-    // the operator ; should work the same way 
-    
-    // if first command return false and && is found, then done
-    // if first command returns true and || is found, then done
-    // if first command returns false and || is found, then execute after operator
+
+bool contains(string cmd, char c) { 
+    // checks for redirection
+    size_t pos = cmd.find(c);
+    return pos != string::npos;
+}
 
 void Parse::parse(string input) {
-    const string leftParen = "("; // done
-    const string rightParen = ")"; // done
+    const string leftParen = "("; // WORKS
+    const string rightParen = ")"; // WORKS
     const string a = "&&"; // WORKS
     const string o = "||"; // WORKS
     const string s = ";"; // WORKS
@@ -181,15 +182,11 @@ void Parse::parse(string input) {
     // stack<char> p;
     for(unsigned i = 0; i < cmds_vector.size(); i++) {
         unsigned size = cmds_vector.size();
-        
+        // char filename[1024], coms[1024];
+
         // transfers commands
         string indexString = cmds_vector.at(i);
         
-        // if(cmds_vector.at(i) == leftParen){
-        //     p.push(cmds_vector.at(i));
-        // } else if(cmds_vector.at(i)){
-            
-        // } else
         if(cmds_vector.at(i) == a) {
 
             // checks to see if connector is &&
@@ -211,12 +208,10 @@ void Parse::parse(string input) {
             makeTree(cmd_stack);
             cmd_stack.push(new SemiColon());
         }
-        
         else if(cmds_vector.at(i) == leftParen) {
             
             cmd_stack.push(new Parentheses());
         }
-        
         else if(cmds_vector.at(i) == rightParen) {
             // while it's not "(", continue making the tree
             while(!cmd_stack.empty() && cmd_stack.top()->getID() != leftParen) {
@@ -226,6 +221,122 @@ void Parse::parse(string input) {
                 cmd_stack.pop();
             //}
         }
+        else if(cmds_vector.at(i) == singleInput) {             // <
+            while(cmd_stack.top()->getID() == singleInput) {
+                string infile = cmds_vector.at(2);
+                int in = open(infile.c_str(), O_RDONLY);
+                if(cmds_vector.at(0) == "cat") {
+                    cmds_vector.at(1) = cmds_vector.at(2);
+                    cmds_vector.pop_back();
+                }
+                vector<char*> argv;
+                // converts vect of string to vect of char* for execvp
+                for (unsigned i = 0; i < cmds_vector.size(); i++) {
+                  char *charStr = new char[cmds_vector.at(i).size() + 1];
+                  strcpy(charStr, cmds_vector.at(i).c_str());
+                  argv.push_back(charStr); 
+                }
+                argv.push_back(NULL);
+                int pid = fork();
+                if (pid == 0) {
+                    if (dup2(in, STDIN_FILENO) == -1) {
+                        perror("dup2");
+                        exit(1);
+                    }
+                    if (dup2(1, 1) == -1) {
+                        perror("dup2");
+                        exit(1);
+                    }
+                    close(in);
+                    execvp(argv[0], argv.data());
+                    if(execvp(argv[0], argv.data()) < 0){ // runs the command
+                        perror("execvp");
+                        exit(1);
+                    }
+                }
+                if (pid > 0) {// parent process
+                    if (wait(0) == -1) {
+                        perror("wait");
+                        exit(1);
+                    }
+                }
+            }
+        }
+        
+        else if(cmds_vector.at(i) == singleOutput) { //  >
+            while(cmd_stack.top()->getID() == singleOutput) {
+                string outfile = cmds_vector.at(cmds_vector.size() - 1);
+                int out = open(outfile.c_str(),O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                cmds_vector.pop_back();
+                cmds_vector.pop_back();
+                vector<char*> argv;
+                for (unsigned i = 0; i < cmds_vector.size(); i++) {
+                    char *charStr = new char[cmds_vector.at(i).size() + 1];
+                    strcpy(charStr, cmds_vector.at(i).c_str());
+                    argv.push_back(charStr); 
+                }          
+                argv.push_back(NULL);
+                int pid = fork();
+                if (pid == 0) {
+                    if(dup2(0, 0) == -1) {
+                        perror("dup2");
+                        exit(1);
+                    }
+                    if(dup2(out, STDOUT_FILENO) == -1) {
+                        perror("dup2");
+                        exit(1);
+                    }
+                    close(out);
+                    if(execvp(argv[0], argv.data()) < 0) {// runs command
+                        perror("execvp");
+                        exit(1);
+                    }
+                }
+                if(pid > 0) {//parent
+                    if(wait(0) == -1) {
+                        perror("wait");
+                        exit(1);
+                    }
+                }
+            }
+        }
+        else if(cmds_vector.at(i) == doubleOutput){  // >>
+            while(cmd_stack.top()->getID() == doubleOutput) {
+                string outfile = cmds_vector.at(cmds_vector.size() - 1);
+                int out = open(outfile.c_str(),O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR);
+                cmds_vector.pop_back();
+                cmds_vector.pop_back();
+                vector<char*> argv;
+                for (unsigned i = 0; i < cmds_vector.size(); i++) {
+                    char *charStr = new char[cmds_vector.at(i).size() + 1];
+                    strcpy(charStr, cmds_vector.at(i).c_str());
+                    argv.push_back(charStr); 
+                }          
+                argv.push_back(NULL);
+                int pid = fork();
+                if(pid == 0) {
+                    if(dup2(0, 0) == -1) {
+                        perror("dup2");
+                        exit(1);
+                    }
+                    if(dup2(out, 1) == -1) {
+                        perror("dup2");
+                        exit(1);
+                    } 
+                    if(execvp(argv[0], argv.data()) == -1) {// runs command
+                        perror("execvp");
+                        exit(1);
+                    }
+                }
+                if(pid > 0) { // parent process
+                    if (wait(0) == -1) {
+                        perror("wait");
+                        exit(1);
+                    }
+                }
+            }
+        }
+            	
         
         // if user enters test -e or [ -e ...]
         else if (cmds_vector.at(i) == "test" || (cmds_vector.at(i) == "[" && cmds_vector.at(size - 1) == "]")) {
@@ -280,18 +391,18 @@ void Parse::parse(string input) {
                     makeTester(cmds_vector, i + 1, i + 3);
                     i += 3; // skip "]"
                 }
-                        
                 else {
                     cout << "Error: Invalid # of commands\n";
                 }
             }
-
         }
+        
         else { // iterates until find a connector
             unsigned j = 0;
             for (j = i; j < cmds_vector.size(); ++j) {
                 // if connector is found .....
-                if (cmds_vector.at(j) == a || cmds_vector.at(j) == o || cmds_vector.at(j) == s || cmds_vector.at(j) == rightParen) {
+                if (cmds_vector.at(j) == a || cmds_vector.at(j) == o || cmds_vector.at(j) == s || cmds_vector.at(j) == rightParen 
+                    /*|| cmds_vector.at(j) == singleInput || cmds_vector.at(j) == singleOutput || cmds_vector.at(j) == doubleOutput */) {
                     // stores strings into new fork
                     makeFork(cmds_vector, i, j);
                     i = j - 1; // needed to add the connector

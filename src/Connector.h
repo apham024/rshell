@@ -12,6 +12,7 @@ class Connector : public Shell {
 	public:
 		// sets id to conn for program to know when to check for operators
 		Connector() : leftChild(NULL), rightChild(NULL) { id = "connector"; } 
+		Connector(Shell* leftChild, Shell* rightChild): leftChild(NULL), rightChild(NULL) { id = "connector"; }
 		// error checking function for children
 		void errorCheck();
 		// setter functions
