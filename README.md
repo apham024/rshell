@@ -37,5 +37,5 @@ Annie Pham <br />
 Sabrina Wong
     
 ## Bugs/Limitations
-Cannot 'cat' if file is empty; 'cat' does somewhat work with something in the file
+Cannot 'cat' if file is empty; 'cat' does somewhat work with something in the file </br>
 Currently outputs an error when 'cat' is used
