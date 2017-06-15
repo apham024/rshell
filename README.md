@@ -1,4 +1,4 @@
-## CS 100 RShell Assignment 3
+## CS 100 RShell Assignment 4
 This is a command shell. Programmed in C++ and makes use of execvp, waitpid, and fork.<br />
 Has the same functionality as a regular terminal.
 
@@ -37,6 +37,5 @@ Annie Pham <br />
 Sabrina Wong
     
 ## Bugs/Limitations
-Commands cannot implement cd <br />
-Currently cannot take in operators inside precedence tests 
-
+Cannot 'cat' if file is empty; 'cat' does somewhat work with something in the file
+Currently outputs an error when 'cat' is used
