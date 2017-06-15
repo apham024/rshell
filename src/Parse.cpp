@@ -266,8 +266,7 @@ void Parse::parse(string input) {
         else if(cmds_vector.at(i) == singleOutput) { //  >
             while(cmd_stack.top()->getID() == singleOutput) {
                 string outfile = cmds_vector.at(cmds_vector.size() - 1);
-                // int out = open(outfile.c_str(),O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR, 0644);
-                int out = creat(outfile.c_str(), 0644);
+                int out = open(outfile.c_str(),O_WRONLY | O_TRUNC | O_CREAT, S_IRUSR | S_IRGRP | S_IWGRP | S_IWUSR, 0644);
                 cmds_vector.pop_back();
                 cmds_vector.pop_back();
                 vector<char*> argv;
