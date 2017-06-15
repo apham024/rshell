@@ -96,7 +96,7 @@ void Parse::makeFork(vector<string> &cmds_vector, unsigned i, unsigned j) {
 
 void Parse::makeTree(stack<Connector*> &cmd_stack) {
     // since stack is LIFO, set right child first
-    if (!cmd_stack.empty()) {
+    if (!cmd_stack.empty() && cmd_stack.top()->getID() == "connector") {
         // to set right the child
         cmd_stack.top()->setRightChild(exec_cmds_vec.back());
         exec_cmds_vec.pop_back();
